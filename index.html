@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#f5f9ff">
+  <meta name="description" content="天赋罗盘：用40道原创日常情境题，看见你做事时更自然的十种优势倾向。">
+  <title>天赋罗盘｜十维优势倾向测试</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23355bc9'/%3E%3Cpath d='M32 10l6.5 15.5L54 32l-15.5 6.5L32 54l-6.5-15.5L10 32l15.5-6.5z' fill='white'/%3E%3C/svg%3E">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!--
+  THESIS: 天赋不是奖章，而是一组会在日常选择中反复聚焦的镜片；拒绝把测试做成宣传落地页。
+  OWN-WORLD: 明亮光学工作台，雾白底、靛蓝刻度、琥珀与青绿光谱边；控件像可触摸的测量仪器。
+  STORY: 访客从十枚镜片进入40个情境，完成选择后看见主倾向、完整分布与可立即尝试的行动。
+  FIRST VIEWPORT: 标题和说明在上，十维光学盘占中心，主按钮贴近拇指区；手机无需滚动即可开始。
+  FORM: 七个方向中的第六项——光学调焦台；seed cc843366。
+  FINISH: unreviewed and undocumented is unfinished; this build ends with the finish review, the verdict, DESIGN.md, and every shipping raster carrying its provenance
+  -->
+  <main class="app-shell" id="app">
+    <header class="app-header" aria-label="网站标题">
+      <button class="brand-button" id="home-button" type="button" aria-label="返回天赋罗盘首页">
+        <svg viewBox="0 0 32 32" aria-hidden="true"><path d="M16 2.5l3.2 10.3L29.5 16l-10.3 3.2L16 29.5l-3.2-10.3L2.5 16l10.3-3.2z"/><circle cx="16" cy="16" r="3.1"/></svg>
+        <span>天赋罗盘</span>
+      </button>
+      <button class="text-button" id="top-share" type="button">分享</button>
+    </header>
+
+    <section class="screen start-screen is-active" id="start-screen" aria-labelledby="start-title">
+      <div class="start-copy">
+        <h1 id="start-title">找到你做事时<br>更自然的发力方式</h1>
+        <p>40道原创日常情境题，生成一份免费的十维优势倾向报告。</p>
+      </div>
+
+      <div class="lens-field" aria-label="十种优势倾向：创意构想、清晰表达、逻辑拆解、美感组织、空间建构、细节洞察、情绪共鸣、自我校准、节奏推进、身体协调">
+        <div class="lens-orbit orbit-a"></div>
+        <div class="lens-orbit orbit-b"></div>
+        <div class="lens-core" aria-hidden="true">
+          <svg viewBox="0 0 80 80"><path d="M40 6l7.5 26.5L74 40 47.5 47.5 40 74l-7.5-26.5L6 40l26.5-7.5z"/><circle cx="40" cy="40" r="9"/></svg>
+        </div>
+        <span class="talent-node n1">创意</span><span class="talent-node n2">表达</span>
+        <span class="talent-node n3">逻辑</span><span class="talent-node n4">美感</span>
+        <span class="talent-node n5">空间</span><span class="talent-node n6">观察</span>
+        <span class="talent-node n7">共鸣</span><span class="talent-node n8">自察</span>
+        <span class="talent-node n9">推进</span><span class="talent-node n10">协调</span>
+      </div>
+
+      <div class="resume-strip is-hidden" id="resume-strip">
+        <div><strong>上次还没有答完</strong><span id="resume-copy">已完成 0 / 40</span></div>
+        <button id="resume-button" type="button">继续作答</button>
+      </div>
+
+      <div class="start-actions">
+        <div class="test-meta"><span>10个优势方向</span><i></i><span>约5分钟</span><i></i><span>完整报告免费</span></div>
+        <button class="primary-button" id="start-button" type="button">开始测试</button>
+        <button class="secondary-button" id="start-share" type="button">分享测试</button>
+        <p class="disclaimer">仅用于自我了解，不作为心理诊断、招聘测评或能力定论。</p>
+      </div>
+    </section>
+
+    <section class="screen test-screen" id="test-screen" aria-live="polite" aria-labelledby="question-text">
+      <div class="test-head">
+        <button class="leave-button" id="leave-test" type="button">暂存返回</button>
+        <span id="progress-copy">1 / 40</span>
+      </div>
+      <div class="progress-track" role="progressbar" aria-label="答题进度" aria-valuemin="0" aria-valuemax="40" aria-valuenow="0"><span id="progress-bar"></span></div>
+
+      <article class="question-stage">
+        <p class="question-instruction">选择更接近你第一反应的一项</p>
+        <h2 id="question-text"></h2>
+        <div class="answer-list" id="answer-list" role="group" aria-label="回答选项"></div>
+      </article>
+
+      <div class="test-footer">
+        <button class="previous-button" id="previous-question" type="button">上一题</button>
+        <span>没有标准答案，按平时的你作答</span>
+      </div>
+    </section>
+
+    <section class="screen loading-screen" id="loading-screen" aria-live="assertive">
+      <div class="focus-loader" aria-hidden="true"><i></i><i></i><span></span></div>
+      <h2>正在校准你的天赋罗盘</h2>
+      <p>把40次选择整理成一张可解释的倾向地图。</p>
+      <div class="loading-steps">
+        <span class="is-done">归纳日常反应<b>完成</b></span>
+        <span class="is-active">比较十种倾向<b>进行中</b></span>
+        <span>生成行动建议<b>等待中</b></span>
+      </div>
+    </section>
+
+    <section class="screen result-screen" id="result-screen" aria-labelledby="result-title">
+      <div class="result-hero">
+        <div class="result-mark" id="result-mark">构</div>
+        <p>你的主天赋倾向</p>
+        <h1 id="result-title">创意构想</h1>
+        <p class="result-summary" id="result-summary"></p>
+      </div>
+
+      <section class="result-section" aria-labelledby="top-three-title">
+        <h2 id="top-three-title">你最自然的三个方向</h2>
+        <div class="top-three" id="top-three"></div>
+      </section>
+
+      <section class="result-section distribution-section" aria-labelledby="distribution-title">
+        <div class="section-heading-row"><h2 id="distribution-title">十维倾向分布</h2><span>相对偏好指数</span></div>
+        <canvas id="talent-radar" width="640" height="520" role="img" aria-label="十维天赋倾向雷达图"></canvas>
+        <div class="distribution-list" id="distribution-list"></div>
+      </section>
+
+      <section class="result-section result-copy-section" aria-labelledby="scenes-title">
+        <h2 id="scenes-title">你更容易进入状态的场景</h2>
+        <ul id="scene-list"></ul>
+      </section>
+
+      <section class="result-section result-copy-section" aria-labelledby="actions-title">
+        <h2 id="actions-title">接下来可以这样用</h2>
+        <ol id="action-list"></ol>
+      </section>
+
+      <div class="result-actions">
+        <button class="primary-button" id="share-result" type="button">分享我的结果</button>
+        <button class="secondary-button" id="restart-button" type="button">重新测试</button>
+        <p class="disclaimer">报告描述的是偏好与习惯，不等于能力上限。重要选择仍需结合真实经历与反馈。</p>
+      </div>
+    </section>
+
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
